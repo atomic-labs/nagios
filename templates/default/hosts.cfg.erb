@@ -55,6 +55,9 @@ define host {
   host_name <%= n['id'] %>
   hostgroups <%= n['hostgroups'].join(",") %>
   notifications_enabled <%= n['notifications'] %>
+  <% if !n['check_command'].nil? -%>
+  check_command <%= n['check_command'] %>
+  <% end -%>
 }
 <% end -%>
 <% end -%>
