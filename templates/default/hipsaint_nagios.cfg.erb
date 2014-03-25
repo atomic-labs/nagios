@@ -1,0 +1,21 @@
+define command {
+    command_name    notify-host-by-hipchat
+    command_line    hipsaint --token=<%= node["hipchat"]["token"] %> --room=<%= node["hipchat"]["event_room_id"] %> --type=host --inputs="$HOSTNAME$|$LONGDATETIME$|$NOTIFICATIONTYPE$|$HOSTADDRESS$|$HOSTSTATE$|$HOSTOUTPUT$" -n
+}
+
+define command {
+    command_name    notify-service-by-hipchat
+    command_line    hipsaint --token=<%= node["hipchat"]["token"] %> --room=<%= node["hipchat"]["event_room_id"] %> --type=service --inputs="$SERVICEDESC$|$HOSTALIAS$|$LONGDATETIME$|$NOTIFICATIONTYPE$|$HOSTADDRESS$|$SERVICESTATE$|$SERVICEOUTPUT$" -n
+}
+
+define contact {
+    contact_name                    hipchat
+    alias                           HipChat Pseudo-Contact
+    service_notification_period     24x7
+    host_notification_period        24x7
+    service_notification_options    w,u,c,r
+    host_notification_options       d,r
+    service_notification_commands   notify-service-by-hipchat
+    host_notification_commands      notify-host-by-hipchat
+    email   /dev/null
+}
